@@ -90,7 +90,7 @@ struct RunToolOptions: ParsableArguments {
 }
 
 /// swift-run tool namespace
-public struct SwiftRunTool: SwiftCommand {
+public struct SwiftRunTool: AsyncSwiftCommand {
     public static var configuration = CommandConfiguration(
         commandName: "run",
         _superCommandName: "swift",
@@ -109,7 +109,7 @@ public struct SwiftRunTool: SwiftCommand {
         return .init(wantsREPLProduct: options.mode == .repl)
     }
 
-    public func run(_ swiftTool: SwiftTool) throws {
+    public func run(_ swiftTool: SwiftTool) async throws {
         if options.shouldBuildTests && options.shouldSkipBuild {
             swiftTool.observabilityScope.emit(
               .mutuallyExclusiveArgumentsError(arguments: ["--build-tests", "--skip-build"])
